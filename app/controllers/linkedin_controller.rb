@@ -4,7 +4,7 @@ class LinkedinController < ApplicationController
     @@config = { 
         :site => 'https://api.linkedin.com',
         :authorize_path => '/uas/oauth/authenticate',
-        :request_token_path => '/uas/oauth/requestToken?scope=r_basicprofile+r_fullprofile+r_emailaddress+r_network',
+        :request_token_path => '/uas/oauth/requestToken?scope=r_basicprofile',
         :access_token_path => '/uas/oauth/accessToken' 
     }
   
@@ -16,7 +16,7 @@ class LinkedinController < ApplicationController
   
     def linkedin_profile
       @basic_profile = get_basic_profile
-      @full_profile = get_full_profile
+    #   @full_profile = get_full_profile
     #   @positions = get_positions
     #   @educations = get_educations
     end
@@ -70,26 +70,26 @@ class LinkedinController < ApplicationController
       end
     end
   
-    def get_full_profile
-      fprofile = FullProfile.find_by_user_id(current_user.id)
-      if fprofile.nil?
-        client = get_client
-        full_profile = client.profile(:fields => [:associations, :honors, :interests])
-        full_profile = full_profile.to_hash
-        new_full_profile = FullProfile.new(full_profile)
-        new_full_profile.user = current_user
-        new_full_profile.save 
-        new_full_profile
-      else
-        fprofile
-      end
-    end
+    # def get_full_profile
+    #   fprofile = FullProfile.find_by_user_id(current_user.id)
+    #   if fprofile.nil?
+    #     client = get_client
+    #     full_profile = client.profile(:fields => [:associations, :honors, :interests])
+    #     full_profile = full_profile.to_hash
+    #     new_full_profile = FullProfile.new(full_profile)
+    #     new_full_profile.user = current_user
+    #     new_full_profile.save 
+    #     new_full_profile
+    #   else
+    #     fprofile
+    #   end
+    # end
   
     # def get_positions
     #   positions = Position.where(:full_profile_id => @current_user.id)
     #   if positions.empty?
     #     client = get_client
-    #     positions = client.profile(:fields => [:positions]).all
+    #     positions = client.profile(:fields => [:positions]).positions.all
     #     positions.each do |p|
     #       if p.is_current == "true"
     #         Position.create(
@@ -121,7 +121,7 @@ class LinkedinController < ApplicationController
     #   educations = Education.where(:full_profile_id => @current_user.id)
     #   if educations.empty?
     #     client = get_client
-    #     educations = client.profile(:fields => [:educations]).all
+    #     educations = client.profile(:fields => [:educations]).educations.all
     #     educations.each do |e|
     #       new_educations = Education.create(
     #         school_name: e.school_name, 
