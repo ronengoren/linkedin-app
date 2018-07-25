@@ -4,7 +4,7 @@ class LinkedinController < ApplicationController
     @@config = { 
         :site => 'https://api.linkedin.com',
         :authorize_path => '/uas/oauth/authenticate',
-        :request_token_path => '/uas/oauth/requestToken?scope=r_basicprofile+r_fullprofile+r_emailaddress+r_network',
+        :request_token_path => '/uas/oauth/requestToken?scope=r_basicprofile',
         :access_token_path => '/uas/oauth/accessToken' 
     }
   
